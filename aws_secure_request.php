@@ -100,6 +100,8 @@ function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl,
 	$headers[] = 'content-type: application/x-www-form-urlencoded';
 	$headers[] = 'host: ' . $host;
 	$headers[] = 'x-amz-date: ' . $reqDateTime;
+	$headers[] = 'x-amz-content-sha256: ' . $requestHasedPayload;
+
 
 	return $headers;
 }// End calcualteAwsSignatureAndReturnHeaders
