@@ -4,7 +4,7 @@ include('./aws_secure_request.php');
 // Configuration values
 $host					= 's3.amazonaws.com';
 $accessKey	 			= 'somekey';
-$secretKey 				= 'somekeys/PE4Nd9r5X';
+$secretKey 				= 'somekeysPE4Nd9r5X';
 $region 				= 'us-east-1';
 $service 				= 's3';
 
