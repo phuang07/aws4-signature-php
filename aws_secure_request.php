@@ -105,6 +105,7 @@ function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl,
 	$headers[] = 'x-amz-date: ' . $reqDateTime;
     $headers[] = 'x-amz-content-sha256: ' . $reqContentSHA256;
 
+
 	return $headers;
 }// End calcualteAwsSignatureAndReturnHeaders
 
