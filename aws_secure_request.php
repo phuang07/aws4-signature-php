@@ -11,8 +11,8 @@
 * This function is in use
 * for calculate the authorization signature
 */
-function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl, 
-			$accessKey, $secretKey, $region, $service, 
+function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl,
+			$accessKey, $secretKey, $region, $service,
 			$httpRequestMethod, $data, $debug = TRUE){
 
 	$terminationString	= 'aws4_request';
@@ -20,7 +20,7 @@ function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl,
 	$phpAlgorithm 		= 'sha256';
 	$canonicalURI		= $uri;
 	$canonicalQueryString	= '';
-	$signedHeaders		= 'content-type;host;x-amz-date';
+	$signedHeaders		= 'host;x-amz-date';
 
 	$currentDateTime = new DateTime('UTC');
 	$reqDate = $currentDateTime->format('Ymd');
@@ -35,7 +35,7 @@ function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl,
 
 	// Create canonical headers
 	$canonicalHeaders = array();
-	$canonicalHeaders[] = 'content-type:application/x-www-form-urlencoded';
+	// $canonicalHeaders[] = 'content-type:application/x-www-form-urlencoded';
 	$canonicalHeaders[] = 'host:' . $host;
 	$canonicalHeaders[] = 'x-amz-date:' . $reqDateTime;
 	$canonicalHeadersStr = implode("\n", $canonicalHeaders);
@@ -93,15 +93,17 @@ function calcualteAwsSignatureAndReturnHeaders($host, $uri, $requestUrl,
 	$authorizationHeaderStr = $algorithm . ' ' . implode(', ', $authorizationHeader);
 
 
+    $reqContentSHA256 = $requestHasedPayload;
+        
+
 	// Request headers
 	$headers = array();
 	$headers[] = 'authorization:'.$authorizationHeaderStr;
-	$headers[] = 'content-length:'.strlen($data);
-	$headers[] = 'content-type: application/x-www-form-urlencoded';
+	// $headers[] = 'content-length:'.strlen($data);
+	// $headers[] = 'content-type: application/x-www-form-urlencoded';
 	$headers[] = 'host: ' . $host;
 	$headers[] = 'x-amz-date: ' . $reqDateTime;
-	// $headers[] = 'x-amz-content-sha256: ' . $requestHasedPayload;
-
+    $headers[] = 'x-amz-content-sha256: ' . $reqContentSHA256;
 
 	return $headers;
 }// End calcualteAwsSignatureAndReturnHeaders
@@ -122,7 +124,7 @@ function callToAPI($requestUrl, $httpRequestMethod, $headers, $data, $debug=TRUE
 	  CURLOPT_POST => true,
 	  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 	  CURLOPT_CUSTOMREQUEST => $httpRequestMethod,
-	  CURLOPT_POSTFIELDS => $data,
+	  // CURLOPT_POSTFIELDS => $data,
 	  CURLOPT_VERBOSE => 0,
 	  CURLOPT_SSL_VERIFYHOST => 0,
 	  CURLOPT_SSL_VERIFYPEER => 0,
@@ -160,7 +162,7 @@ function callToAPI($requestUrl, $httpRequestMethod, $headers, $data, $debug=TRUE
 			echo "</pre>";
 		}
 	}
-	
+
 	return array(
 		"responseCode" => $responseCode,
 		"response" => $response,
